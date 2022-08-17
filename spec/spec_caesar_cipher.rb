@@ -1,4 +1,5 @@
 # frozen_string_literal: false
+
 require './lib/caesar_cipher'
 
 RSpec.describe 'alphabet_downcase' do
@@ -53,5 +54,9 @@ RSpec.describe 'caesar_cipher' do
 
   it 'Doesn\'t encrypts spaces or non alphabet letter characters' do
     expect(caesar_cipher('hello, world.', 1)).to eql('ifmmp, xpsme.')
+  end
+
+  it 'Decrypts messages by using a negative shift' do
+    expect(caesar_cipher('ifmmp, xpsme.', -1)).to eql('hello, world.')
   end
 end
