@@ -1,24 +1,17 @@
 # frozen_string_literal: false
 
-def alphabet_downcase
-  %w[a b c d e f g h i j k l m n o p q r s t u v w x y z]
-end
+def caesar_cipher(phrase, shift)
+  alpha = %w[a b c d e f g h i j k l m n o p q r s t u v w x y z]
+  alpha_length = alpha.length
 
-def get_letter(position, is_upcase: false)
-  alpha = alphabet_downcase
-  position -= alpha.length until position < alpha.length
-  alpha.map!(&:upcase) if is_upcase
-  alpha[position]
-end
+  result = phrase.split('').map do |letter|                             # Map the result
+    letter_downcase = letter.downcase
 
-def caesar_cipher(sentence, shift)
-  encrypted = sentence.split('')
-  alpha = alphabet_downcase
+    position = (letter_downcase.ord - 97) + shift                       # Get the position
+    position -= alpha_length if position >= alpha_length                # Wrap around
+    next letter unless alpha.any? { |item| item == letter_downcase }    # Guard clause if there is no letter in alpha
 
-  encrypted.map! do |letter|
-    is_upcase = letter.upcase == letter
-    position = alpha.find_index(letter.downcase)
-    position.nil? ? letter : get_letter(position + shift, is_upcase: is_upcase)
+    letter == letter.upcase ? alpha[position].upcase : alpha[position]  # Get character
   end
-  encrypted.join('')
+  result.join('')
 end
